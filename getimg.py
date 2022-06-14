@@ -4,6 +4,9 @@ from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 import time
 from PIL import Image
+import pytesseract as tess
+tess.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+
 
 def lanchBrowser():
     options = Options()
@@ -12,7 +15,6 @@ def lanchBrowser():
     
     
     driver.get("https://www.how-to-type.com/typing-practice/quote/")
-    time.sleep(4)
     return driver
 
 driver = lanchBrowser()
@@ -40,16 +42,37 @@ def getScreenshot():
 
     # shows results
     screenshot = Image.open('ss.png')
-    screenshot.show()
-    im.show()
+    #screenshot.show()
+    #im.show()
     print(element, location, size, x, y, width, height)
 
 getScreenshot()
 
+def image_to_text():
+
+    image = 'element.png'
+    text = tess.image_to_string(Image.open(image), lang='eng')
+    print(text)
+
+image_to_text()
 
 def closeBrowser():
-    time.sleep(3)
+    time.sleep(1)
     driver.close()
     return driver
 
 closeBrowser()
+
+
+'''
+def image_to_text():
+    reader = easyocr.Reader(['en'], gpu = False)
+    image_file_name='element.png'
+    image = cv2.imread(image_file_name)
+
+    image_text = (reader.readtext(image,detail=0)[0])
+    print(image_text)
+image_to_text()
+
+only works in py 2
+'''
